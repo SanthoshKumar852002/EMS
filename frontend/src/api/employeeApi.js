@@ -1,9 +1,9 @@
 import axios from 'axios';
-
+import apiClient from './axiosConfig.js';
 const API_URL = 'http://localhost:5000/api/employees';
 
 export const fetchEmployees = () => axios.get(API_URL);
-
+export const getEmployeeCount = () =>  apiClient.get('/employees/count');
 export const createEmployee = (formData) =>
   axios.post(API_URL, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
+// 👇 Corrected: Import only the single function from the correct file
+import { getDashboardCounts } from '../api/dashboardApi.js'; 
 
 const OverviewCards = () => {
   const [stats, setStats] = useState({
@@ -11,18 +12,15 @@ const OverviewCards = () => {
 
   const fetchData = async () => {
     try {
-      const [empRes, depRes, leaveRes, salaryRes] = await Promise.all([
-        getEmployeeCount(),
-        getDepartmentCount(),
-        getLeaveCount(),
-        getTotalSalary(),
-      ]);
+      // 👇 Corrected: Call the single, efficient dashboard API function
+      const data = await getDashboardCounts();
 
+      // Update the state with the data received from the single API call
       setStats({
-        employees: empRes.data.count || 0,
-        departments: depRes.data.count || 0,
-        leaves: leaveRes.data.count || 0,
-        salaryPaid: salaryRes.data.total || 0,
+        employees: data.employees || 0,
+        departments: data.departments || 0,
+        leaves: data.leaves || 0,
+        salaryPaid: data.salaryPaid || 0,
       });
     } catch (err) {
       console.error('Dashboard fetch error:', err);

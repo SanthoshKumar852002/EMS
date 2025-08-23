@@ -8,7 +8,7 @@ import authRoutes from './routes/auth.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 import salaryRoutes from './routes/salaryRoutes.js';
 import leaveRoutes from './routes/leaveRoutes.js';
-
+import dashboardRoutes from './routes/dashboardRoutes.js'; 
 
 
 
@@ -41,7 +41,7 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/salaries', salaryRoutes);
 app.use('/api/leaves', leaveRoutes);
-
+app.use('/api/dashboard', dashboardRoutes);
 
 // ✅ Root Route
 app.get('/', (req, res) => {

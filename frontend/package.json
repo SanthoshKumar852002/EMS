@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/sevillana": "^5.2.6",
     "axios": "^1.10.0",
     "framer-motion": "^12.23.6",
     "nodemailer": "^7.0.5",

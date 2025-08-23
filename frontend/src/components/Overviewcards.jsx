@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
+// 👇 ADD THIS IMPORT
+import { getDashboardCounts } from '../api/dashboardApi.js'; 
 
 const OverviewCards = () => {
   const [data, setData] = useState({
@@ -12,7 +13,8 @@ const OverviewCards = () => {
     const fetchCounts = async () => {
       try {
         const res = await getDashboardCounts();
-        setData(res.data);
+        // Assuming the API function returns the data object directly
+        setData(res); 
       } catch (err) {
         console.error('Error fetching dashboard counts', err);
       }
@@ -33,7 +35,7 @@ const OverviewCards = () => {
       </div>
       <div className="bg-yellow-200 rounded-xl p-5 shadow-md">
         <h3 className="text-xl font-bold">💰 Monthly Pay</h3>
-        <p className="text-3xl">₹ {data.salaryPaid}</p>
+        <p className="text-3xl">₹ {data.salaryPaid.toLocaleString()}</p>
       </div>
     </>
   );

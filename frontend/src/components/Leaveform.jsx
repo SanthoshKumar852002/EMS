@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { applyLeave } from '../api/leaveAPI.js'; // 👈 Import the new function
 
 const LeaveForm = ({ onLeaveApplied }) => {
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const LeaveForm = ({ onLeaveApplied }) => {
     e.preventDefault();
 
     try {
-      await axios.post('/api/leaves', formData);
+      await applyLeave(formData); // 👈 Use the imported function
       Swal.fire('Success', 'Leave Applied Successfully!', 'success');
       setFormData({
         employeeId: '',
@@ -28,7 +28,9 @@ const LeaveForm = ({ onLeaveApplied }) => {
         toDate: '',
         reason: ''
       });
-      onLeaveApplied(); // refresh leave list
+      if (onLeaveApplied) {
+        onLeaveApplied(); // refresh leave list
+      }
     } catch (error) {
       console.error(error);
       Swal.fire('Error', 'Failed to apply leave!', 'error');
@@ -39,6 +41,7 @@ const LeaveForm = ({ onLeaveApplied }) => {
     <div className="bg-white rounded shadow p-4 mb-6 border border-gray-200">
       <h3 className="text-lg font-semibold mb-4">Apply for Leave</h3>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ... your form inputs remain the same ... */}
         <div>
           <label className="block text-sm font-medium">Employee ID</label>
           <input
