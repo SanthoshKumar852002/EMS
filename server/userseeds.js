@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import User from "./models/userModel.js";
+import User from "./models/userModel.js"
 
 dotenv.config();
 
@@ -12,23 +12,16 @@ const insertAdmin = async () => {
     await mongoose.connect(MONGO_URI);
     console.log("✅ Connected to MongoDB");
 
-    const existingAdmin = await User.findOne({ email: "admin@example.com" });
-    if (existingAdmin) {
-      console.log("⚠️ Admin already exists");
-      return process.exit(0);
-    }
-
+   await User.deleteMany({ email: "admin@example.com" });
+    console.log("ℹ️  Cleared any existing default admin.");
     // ✅ HASH the password
     const hashedPassword = await bcrypt.hash("admin123", 10);
 
-    const adminUser = new User({
+     const adminUser = new User({
       name: "Admin",
       email: "admin@example.com",
-      password: hashedPassword, // ✅ Save hashed password
+      password: "admin123", // <-- Pass the plain text password here
       role: "admin",
-      profileImage: "",
-      createdAt: new Date(),
-      updatedAt: new Date(),
     });
 
     await adminUser.save();

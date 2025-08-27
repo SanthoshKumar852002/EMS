@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -14,7 +14,7 @@ const LeaveTable = () => {
     pending: 0,
   });
 
-  const fetchLeaves = async () => {
+  const fetchLeaves = useCallback(async () => {
     try {
       const res = await axios.get('/api/leaves');
       const filtered = res.data.filter((leave) =>
@@ -32,11 +32,11 @@ const LeaveTable = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [search]);
 
   const handleStatusChange = async (id, status) => {
     try {
-      const res = await axios.put(`/api/leaves/${id}/status`, { status });
+      await axios.put(`/api/leaves/${id}/status`, { status });
 
       Swal.fire(`Leave ${status}`, '', 'success');
       fetchLeaves();
@@ -47,7 +47,7 @@ const LeaveTable = () => {
 
   useEffect(() => {
     fetchLeaves();
-  }, [search]);
+  }, [fetchLeaves]);
 
   // Pagination logic
   const indexOfLast = currentPage * leavesPerPage;

@@ -4,9 +4,11 @@ import {
   addEmployee,
   getEmployees,
   deleteEmployee,
-  updateEmployee
+  updateEmployee,
+  updateUserProfile
 } from '../controllers/employeeController.js';
-
+import route from 'color-convert/route.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // Storage config
@@ -26,5 +28,6 @@ router.post('/', upload.single('image'), addEmployee);
 router.get('/', getEmployees);
 router.put('/:id', upload.single('image'), updateEmployee);
 router.delete('/:id', deleteEmployee);
+router.put('/profile', protect, upload.single('image'), updateUserProfile);
 
 export default router;
