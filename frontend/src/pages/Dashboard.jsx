@@ -16,7 +16,7 @@ const Dashboard = () => {
         setLoading(true);
         // Fetch counts and employees in parallel
         const [countsRes, employeesRes] = await Promise.all([
-          axios.get('/api/dashboard/counts'), // Assuming this endpoint exists
+          axios.get('/api/dashboard/counts'), 
           axios.get('/api/employees')
         ]);
         setCounts(countsRes.data);

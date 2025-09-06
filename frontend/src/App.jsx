@@ -20,7 +20,7 @@ import SalaryDashboard from "./pages/SalaryDashboard.jsx";
 import LeavesDashboard from "./pages/LeavesDashboard.jsx";
 import DepartmentsDashboard from "./pages/DepartmentsDashboard.jsx";
 import AddEmployee from "./pages/AddEmployee.jsx";
-
+import Settings from "./pages/Settings.jsx";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         <Route path="/" element={<AuthSelection />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/employee-login" element={<EmployeeLogin />} />
-
+      
         {/* === Admin Protected Routes === */}
         <Route path="/admin-dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
         <Route path="/admin/employees" element={<AdminProtectedRoute><ManageEmployees /></AdminProtectedRoute>} />
@@ -38,7 +38,7 @@ function App() {
         <Route path="/admin/salary" element={<AdminProtectedRoute><SalaryDashboard /></AdminProtectedRoute>} />
         <Route path="/admin/leaves" element={<AdminProtectedRoute><LeavesDashboard /></AdminProtectedRoute>} />
         <Route path="/admin/departments" element={<AdminProtectedRoute><DepartmentsDashboard /></AdminProtectedRoute>} />
-        
+        <Route path="/admin/settings" element={<AdminProtectedRoute><Settings /></AdminProtectedRoute>} />  
         {/* === Employee Protected Routes (Now Nested) === */}
         <Route 
           path="/employee-dashboard" 

@@ -26,15 +26,15 @@ const OverviewCards = () => {
   return (
     <>
       <div className="bg-blue-200 rounded-xl p-5 shadow-md">
-        <h3 className="text-xl font-bold">👨‍💼 Total Employees</h3>
+        <h3 className="text-xl font-bold"> Total Employees</h3>
         <p className="text-3xl">{data.employees}</p>
       </div>
       <div className="bg-green-200 rounded-xl p-5 shadow-md">
-        <h3 className="text-xl font-bold">🏢 Departments</h3>
+        <h3 className="text-xl font-bold"> Departments</h3>
         <p className="text-3xl">{data.departments}</p>
       </div>
       <div className="bg-yellow-200 rounded-xl p-5 shadow-md">
-        <h3 className="text-xl font-bold">💰 Monthly Pay</h3>
+        <h3 className="text-xl font-bold"> Monthly Pay</h3>
         <p className="text-3xl">₹ {data.salaryPaid.toLocaleString()}</p>
       </div>
     </>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Swal from 'sweetalert2';
-import { applyLeave } from '../api/leaveAPI.js'; // 👈 Import the new function
+import { useAuth } from '../context/AuthContext'; // ✅ Import useAuth
 
-const LeaveForm = ({ onLeaveApplied }) => {
+const ApplyLeave = () => {
+  const { user } = useAuth(); // ✅ Get the logged-in user's data
+  
   const [formData, setFormData] = useState({
-    employeeId: '',
     leaveType: '',
     fromDate: '',
     toDate: '',
@@ -19,49 +21,51 @@ const LeaveForm = ({ onLeaveApplied }) => {
     e.preventDefault();
 
     try {
-      await applyLeave(formData); // 👈 Use the imported function
+      // ✅ Get the employee token from localStorage
+      const token = localStorage.getItem('employeeToken');
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // ✅ Combine form data with the logged-in user's ID
+      const leaveData = {
+        ...formData,
+        employeeId: user._id, // Use the secure database ID from the logged-in user
+      };
+
+      await axios.post('/api/leaves', leaveData, config);
+
       Swal.fire('Success', 'Leave Applied Successfully!', 'success');
       setFormData({
-        employeeId: '',
         leaveType: '',
         fromDate: '',
         toDate: '',
         reason: ''
       });
-      if (onLeaveApplied) {
-        onLeaveApplied(); // refresh leave list
-      }
+
     } catch (error) {
-      console.error(error);
+      console.error("Leave application error:", error);
       Swal.fire('Error', 'Failed to apply leave!', 'error');
     }
   };
 
   return (
-    <div className="bg-white rounded shadow p-4 mb-6 border border-gray-200">
-      <h3 className="text-lg font-semibold mb-4">Apply for Leave</h3>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* ... your form inputs remain the same ... */}
-        <div>
-          <label className="block text-sm font-medium">Employee ID</label>
-          <input
-            type="text"
-            name="employeeId"
-            value={formData.employeeId}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 w-full border rounded"
-          />
-        </div>
+    <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Apply for Leave</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        
+        {/* We no longer need a manual Employee ID input */}
 
         <div>
-          <label className="block text-sm font-medium">Leave Type</label>
+          <label className="block text-sm font-medium dark:text-gray-300">Leave Type</label>
           <select
             name="leaveType"
             value={formData.leaveType}
             onChange={handleChange}
             required
-            className="mt-1 p-2 w-full border rounded"
+            className="mt-1 p-2 w-full border rounded dark:bg-gray-700 dark:border-gray-600"
           >
             <option value="">Select Type</option>
             <option value="Casual Leave">Casual Leave</option>
@@ -70,46 +74,47 @@ const LeaveForm = ({ onLeaveApplied }) => {
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium">From Date</label>
-          <input
-            type="date"
-            name="fromDate"
-            value={formData.fromDate}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 w-full border rounded"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium dark:text-gray-300">From Date</label>
+            <input
+              type="date"
+              name="fromDate"
+              value={formData.fromDate}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border rounded dark:bg-gray-700 dark:border-gray-600"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium dark:text-gray-300">To Date</label>
+            <input
+              type="date"
+              name="toDate"
+              value={formData.toDate}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border rounded dark:bg-gray-700 dark:border-gray-600"
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium">To Date</label>
-          <input
-            type="date"
-            name="toDate"
-            value={formData.toDate}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 w-full border rounded"
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium">Reason</label>
+          <label className="block text-sm font-medium dark:text-gray-300">Reason</label>
           <textarea
             name="reason"
             value={formData.reason}
             onChange={handleChange}
-            rows={3}
+            rows={4}
             required
-            className="mt-1 p-2 w-full border rounded"
+            className="mt-1 p-2 w-full border rounded dark:bg-gray-700 dark:border-gray-600"
           />
         </div>
 
-        <div className="md:col-span-2 text-right">
+        <div className="text-right">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-transform transform hover:scale-105"
           >
             Apply Leave
           </button>
@@ -119,4 +124,4 @@ const LeaveForm = ({ onLeaveApplied }) => {
   );
 };
 
-export default LeaveForm;
+export default ApplyLeave;

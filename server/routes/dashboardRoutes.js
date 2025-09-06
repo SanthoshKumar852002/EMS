@@ -20,7 +20,7 @@ router.get('/counts', async (req, res) => {
       {
         $group: {
           _id: null, // Group all documents into one
-          totalPaid: { $sum: '$totalSalary' }, // Sum the 'totalSalary' field
+          totalPaid: { $sum: '$total' }, // Sum the 'totalSalary' field
         },
       },
     ]);

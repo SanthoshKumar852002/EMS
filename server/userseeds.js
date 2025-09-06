@@ -20,7 +20,7 @@ const insertAdmin = async () => {
      const adminUser = new User({
       name: "Admin",
       email: "admin@example.com",
-      password: "admin123", // <-- Pass the plain text password here
+      password: "admin123",
       role: "admin",
     });
 

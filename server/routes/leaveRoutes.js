@@ -1,34 +1,24 @@
 import express from 'express';
-import Leave from '../models/leaveModel.js';
+// ✅ Import your controller functions and middleware
+import { applyLeave, getLeaves, updateLeaveStatus } from '../controllers/leaveController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// POST: Apply Leave
-// Corrected Path: Changed from '/apply' to '/' to match the frontend API call
-router.post('/', async (req, res) => {
-  try {
-    const leave = new Leave(req.body);
-    const saved = await leave.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
+// --- Routes ---
 
-// GET: All leaves (can be filtered by search query)
-// Corrected Path: Changed from '/employee/:employeeId' to '/' to match fetchLeaves function
-router.get('/', async (req, res) => {
-    try {
-        const { search } = req.query;
-        let query = {};
-        if (search) {
-            query = { employeeId: { $regex: search, $options: 'i' } };
-        }
-        const leaves = await Leave.find(query).sort({ appliedDate: -1 });
-        res.json(leaves);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+// POST /api/leaves
+// Applies for a leave (should be protected so only logged-in users can apply)
+router.post('/', protect, applyLeave);
+
+// GET /api/leaves
+// Gets all leaves (should be protected for admins)
+router.get('/', protect, getLeaves);
+
+// ✅ THIS IS THE MISSING ROUTE
+// PUT /api/leaves/:id/status
+// Updates a leave's status (should be protected for admins)
+router.put('/:id/status', protect, updateLeaveStatus);
+
 
 export default router;

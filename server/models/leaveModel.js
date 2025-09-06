@@ -4,6 +4,7 @@ const leaveSchema = new mongoose.Schema({
   employeeId: {
     type: String,
     required: true,
+    ref: 'Employee'
   },
   leaveType: {
     type: String,

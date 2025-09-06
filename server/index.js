@@ -16,8 +16,7 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 dotenv.config();
 const app = express();
 
-// ✅ Allow multiple frontend origins (e.g., 5173 and 5176)
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5176'];
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5176', 'http://localhost:5174'];
 
 app.use(cors({
   origin: function (origin, callback) {
