@@ -13,7 +13,17 @@ export const applyLeave = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+// Add this function to server/controllers/leaveController.js
 
+export const getMyLeaveHistory = async (req, res) => {
+  try {
+    // req.user._id comes from the 'protect' middleware
+    const leaves = await Leave.find({ employeeId: req.user._id }).sort({ fromDate: -1 });
+    res.json(leaves);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 export const getLeaves = async (req, res) => {
   try {
     // ✅ THIS IS THE CORRECTED LINE

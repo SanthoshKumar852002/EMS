@@ -2,6 +2,23 @@ import Employee from '../models/employeeModel.js';
 import fs from 'fs';
 import path from 'path';
 
+
+
+export const getEmployeeProfile = async (req, res) => {
+  try {
+    // req.user._id is attached by the 'protect' middleware from the token
+    const employee = await Employee.findById(req.user._id);
+
+    if (employee) {
+      res.json(employee);
+    } else {
+      res.status(404).json({ message: 'Employee not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 const deleteImageFile = (filename) => {
   if (!filename) return;
   const imagePath = path.join('uploads', filename);

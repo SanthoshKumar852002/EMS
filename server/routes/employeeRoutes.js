@@ -5,7 +5,8 @@ import {
   getEmployees,
   deleteEmployee,
   updateEmployee,
-  updateUserProfile
+  updateUserProfile,
+  getEmployeeProfile 
 } from '../controllers/employeeController.js';
 import route from 'color-convert/route.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
@@ -23,7 +24,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
+router.get('/profile', protect, getEmployeeProfile);
 router.post('/', upload.single('image'), addEmployee);
 router.get('/', getEmployees);
 router.put('/:id', upload.single('image'), updateEmployee);

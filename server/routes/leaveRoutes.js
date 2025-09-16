@@ -1,6 +1,6 @@
 import express from 'express';
 // ✅ Import your controller functions and middleware
-import { applyLeave, getLeaves, updateLeaveStatus } from '../controllers/leaveController.js';
+import { applyLeave, getLeaves, updateLeaveStatus,getMyLeaveHistory } from '../controllers/leaveController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.post('/', protect, applyLeave);
 // GET /api/leaves
 // Gets all leaves (should be protected for admins)
 router.get('/', protect, getLeaves);
-
+router.get('/my-history', protect, getMyLeaveHistory);
 // ✅ THIS IS THE MISSING ROUTE
 // PUT /api/leaves/:id/status
 // Updates a leave's status (should be protected for admins)
